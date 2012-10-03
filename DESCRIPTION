@@ -1,6 +1,7 @@
 Package: treeshape
-Description: R functions to do some simulations of trees, measure tree shape, etc.
-Title: treeshape
+Description: R functions to do some simulations of trees, measure tree shape,
+    etc.
+Title: treeshape fxns
 Version: 0.0.1
 Date: 10-02-12
 License: CC0

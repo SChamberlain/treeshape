@@ -3,8 +3,7 @@
 #' Could use this in asking questions aobut how phylogenetic tree balance 
 #'     influences ____ (madlib it). 
 #' 		
-#' @import plyr ape apTreeshape bipartite ggplot2 reshape2 treeshape
-#' @importFrom phytools fastBM
+#' @import plyr ape apTreeshape bipartite ggplot2 reshape2
 #' @param tips 
 #' @param metric Methods to use to generate trees, one of "colless", "beta", or  
 #' 		gamma (see details). Defaults to "colless".
