@@ -1,0 +1,31 @@
+Package: sacbox
+Description: R functions commonly used.
+Title: treeshape
+Version: 0.0.1
+Date: 10-02-12
+License: CC0
+Author: Scott Chamberlain
+Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
+Collate:
+    'fastBM.r'
+    'getnetmets.r'
+    'nodeHeights.r'
+    'pbtree.r'
+    'rantips.r'
+    'req.r'
+    'sim_rand_nets.r'
+    'sim_traits_nets.r'
+    'simbal.r'
+    'simbaltrees.r'
+    'traitsig.r'
+Depends:
+    stringr,
+    plyr,
+    ape,
+    apTreeshape,
+    bipartite,
+    ggplot2
+    reshape2,
+    doMC,
+    picante
+
