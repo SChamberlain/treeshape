@@ -1,5 +1,5 @@
-Package: sacbox
-Description: R functions commonly used.
+Package: treeshape
+Description: R functions to do some simulations of trees, measure tree shape, etc.
 Title: treeshape
 Version: 0.0.1
 Date: 10-02-12
