@@ -3,22 +3,32 @@
 #' Could use this in asking questions aobut how phylogenetic tree balance 
 #'     influences ____ (madlib it). 
 #' 		
-#' @import plyr ape apTreeshape bipartite ggplot2 reshape2
-#' @param tips 
+#' @import phytools ape plyr apTreeshape bipartite reshape2
+#' @param tips Number of species to simulate in each tree - will be same for 
+#' 		all trees.
 #' @param metric Methods to use to generate trees, one of "colless", "beta", or  
 #' 		gamma (see details). Defaults to "colless".
 #' @param numtrees Number of trees to produce. Defaults to 10 trees.
-#' @param cutlow Value at which to filter trees on the low (e.g., unbalanced) side of the metric.
-#' @param cuthigh Value at which to filter trees on the high (e.g., balanced) side of the metric.
-#' @param alpha Alpha value for the Ornstein-Uhlenbeck model of trait evolution.  From ape 
-#'    documentation: "a numeric vector giving the strength of the selective constraint for 
-#'    each branch (can be a single value)."
+#' @param cutlow Value at which to filter trees on the low (e.g., unbalanced) 
+#' 		side of the metric.
+#' @param cuthigh Value at which to filter trees on the high (e.g., balanced) 
+#' 		side of the metric.
+#' @param alpha Alpha value for the Ornstein-Uhlenbeck model of trait evolution.  
+#' 		From ape documentation: "a numeric vector giving the strength of the 
+#' 		selective constraint for each branch (can be a single value)."
+#' @param sigma Sigma is the single value of the standard-deviation of the 
+#' 		random component for each branch (can be a single value).
+#' @param netmets Network structure metrics to calculate - only use those that 
+#' 		calculate single values for each matrix.
+#' @return A data.frame of network structure metrics for balanced and unbalanced 
+#' 		trees.
 #' @examples \dontrun{
-#' temp <- simbaltrees(tips=10, metric="colless", numtrees=10, cutlow=-0.5, cuthigh=0.5, alpha=0.1)
+#' netmets <- c("connectance", "links per species", "nestedness", "web asymmetry")
+#' temp <- simbaltrees(tips=10, metric="colless", numtrees=10, cutlow=-0.5, cuthigh=0.5, alpha=0.1, sigma=1, netmets=netmets)
 #' unique(temp$model)
 #' }
 #' @export
-simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha) {
+simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha, sigma, netmets) {
   
   trees_colless_plants <- simbal(t=tips, metric=metric, n=numtrees, cutlow = cutlow, cuthigh = cuthigh)
   trees_colless_plants_bal <- trees_colless_plants$bal # get the balanced trees
@@ -46,8 +56,8 @@ simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha) {
   # 	abd_col_plants_unbal_rand <- lapply(abd_col_plants_unbal_bm, randtips)
   
   ## Orntsein-Uhlenbeck model for conservation of trait evolution - 1 optima
-  t1_col_plants_bal_ou <- lapply(trees_colless_plants_bal, rTraitCont, model = "OU", sigma = 1, alpha=alpha, theta=1)
-  t1_col_plants_unbal_ou <- lapply(trees_colless_plants_unbal, rTraitCont, model = "OU", sigma = 1, alpha=alpha, theta=1)
+  t1_col_plants_bal_ou <- lapply(trees_colless_plants_bal, rTraitCont, model = "OU", sigma = sigma, alpha=alpha, theta=1)
+  t1_col_plants_unbal_ou <- lapply(trees_colless_plants_unbal, rTraitCont, model = "OU", sigma = sigma, alpha=alpha, theta=1)
   # 	t2_col_plants_bal_ou <- lapply(trees_colless_plants_bal, rTraitCont, model = "OU", sigma = 1, alpha=10, theta=1)
   # 	t2_col_plants_unbal_ou <- lapply(trees_colless_plants_unbal, rTraitCont, model = "OU", sigma = 1, alpha=10, theta=1)
   # 	abd_col_plants_bal_ou <- lapply(t2_col_plants_bal_ou, function(x) exp(x))
@@ -69,8 +79,8 @@ simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha) {
   # 	abd_col_anim_unbal_rand <- lapply(abd_col_anim_unbal_bm, randtips)
   
   ## Orntsein-Uhlenbeck model for conservation of trait evolution - 1 optima
-  t1_col_anim_bal_ou <- lapply(trees_colless_anim_bal, rTraitCont, model = "OU", sigma = 1, alpha=alpha, theta=1)
-  t1_col_anim_unbal_ou <- lapply(trees_colless_anim_unbal, rTraitCont, model = "OU", sigma = 1, alpha=alpha, theta=1)
+  t1_col_anim_bal_ou <- lapply(trees_colless_anim_bal, rTraitCont, model = "OU", sigma = sigma, alpha=alpha, theta=1)
+  t1_col_anim_unbal_ou <- lapply(trees_colless_anim_unbal, rTraitCont, model = "OU", sigma = sigma, alpha=alpha, theta=1)
   # 	t2_col_anim_bal_ou <- lapply(trees_colless_anim_bal, rTraitCont, model = "OU", sigma = 1, alpha=10, theta=1)
   # 	t2_col_anim_unbal_ou <- lapply(trees_colless_anim_unbal, rTraitCont, model = "OU", sigma = 1, alpha=10, theta=1)
   # 	abd_col_anim_bal_ou <- lapply(t2_col_anim_bal_ou, function(x) exp(x))
@@ -210,22 +220,22 @@ simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha) {
   
   
   ################## Calculate network metrics on matrices
-  df_rand <- getnetmets(mats_rand_bal, mats_rand_unbal) # random networks
+  df_rand <- getnetmets(mats_rand_bal, mats_rand_unbal, netmets=netmets) # random networks
   
   ## BM
-  df_traits1_bm_ratio <- getnetmets(mats_traits1_bal_bm_ratio, mats_traits1_unbal_bm_ratio) # ratio traits
-  df_traits1_bm_comp <- getnetmets(mats_traits1_bal_bm_comp, mats_traits1_unbal_bm_comp) # complementarity traits
-  df_traits1_bm_barr <- getnetmets(mats_traits1_bal_bm_barr, mats_traits1_unbal_bm_barr) # barrier traits
+  df_traits1_bm_ratio <- getnetmets(mats_traits1_bal_bm_ratio, mats_traits1_unbal_bm_ratio, netmets=netmets) # ratio traits
+  df_traits1_bm_comp <- getnetmets(mats_traits1_bal_bm_comp, mats_traits1_unbal_bm_comp, netmets=netmets) # complementarity traits
+  df_traits1_bm_barr <- getnetmets(mats_traits1_bal_bm_barr, mats_traits1_unbal_bm_barr, netmets=netmets) # barrier traits
   
   ## Random
-  df_traits1_rand_ratio <- getnetmets(mats_traits1_bal_rand_ratio, mats_traits1_unbal_rand_ratio) # ratio traits
-  df_traits1_rand_comp <- getnetmets(mats_traits1_bal_rand_comp, mats_traits1_unbal_rand_comp) # complementarity traits
-  df_traits1_rand_barr <- getnetmets(mats_traits1_bal_rand_barr, mats_traits1_unbal_rand_barr) # barrier traits
+  df_traits1_rand_ratio <- getnetmets(mats_traits1_bal_rand_ratio, mats_traits1_unbal_rand_ratio, netmets=netmets) # ratio traits
+  df_traits1_rand_comp <- getnetmets(mats_traits1_bal_rand_comp, mats_traits1_unbal_rand_comp, netmets=netmets) # complementarity traits
+  df_traits1_rand_barr <- getnetmets(mats_traits1_bal_rand_barr, mats_traits1_unbal_rand_barr, netmets=netmets) # barrier traits
   
   ## OU
-  df_traits1_ou_ratio <- getnetmets(mats_traits1_bal_ou_ratio, mats_traits1_unbal_ou_ratio) # ratio traits
-  df_traits1_ou_comp <- getnetmets(mats_traits1_bal_ou_comp, mats_traits1_unbal_ou_comp) # complementarity traits
-  df_traits1_ou_barr <- getnetmets(mats_traits1_bal_ou_barr, mats_traits1_unbal_ou_barr) # barrier traits
+  df_traits1_ou_ratio <- getnetmets(mats_traits1_bal_ou_ratio, mats_traits1_unbal_ou_ratio, netmets=netmets) # ratio traits
+  df_traits1_ou_comp <- getnetmets(mats_traits1_bal_ou_comp, mats_traits1_unbal_ou_comp, netmets=netmets) # complementarity traits
+  df_traits1_ou_barr <- getnetmets(mats_traits1_bal_ou_barr, mats_traits1_unbal_ou_barr, netmets=netmets) # barrier traits
   
   alldat <- rbind(df_rand, 
                   df_traits1_bm_ratio, df_traits1_bm_comp, df_traits1_bm_barr,

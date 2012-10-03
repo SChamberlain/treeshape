@@ -1,3 +1,13 @@
+#' Measure aspects of traits on trees.
+#' 
+#' @import ape
+#' @param listoftrees 
+#' @examples \dontrun{
+#' trees <- rmtree(N=10, n=10)
+#' traitvecs <- lapply(trees, fastBM)
+#' traitsig(traitvecs, trees)
+#' }
+#' @export
 sim_rand_nets <- function(listoftrees) {
   mats <- list()
   for(i in 1:length(listoftrees[[1]])) {

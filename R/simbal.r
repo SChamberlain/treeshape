@@ -1,6 +1,6 @@
 #' Simulate balanced and unbalanced trees.
 #' 
-#' @import ape apTreeshape plyr treeshape phytools
+#' @import ape apTreeshape plyr phytools
 #' @param t Number of tips (i.e., species). Defaults to 10 tips.
 #' @param metric Methods to use to generate trees, one of "colless", "beta", or  
 #'   	gamma (see details). Defaults to "colless".
