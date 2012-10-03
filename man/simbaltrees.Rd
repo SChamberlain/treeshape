@@ -3,7 +3,8 @@
 \title{Simulate a set of balanced and unbalanced trees.}
 \usage{
   simbaltrees(tips = 10, metric, numtrees, cutlow, cuthigh,
-    alpha, sigma, netmets)
+    alpha, sigma,
+    netmets = c("connectance", "links per species", "nestedness", "web asymmetry"))
 }
 \arguments{
   \item{tips}{Number of species to simulate in each tree -

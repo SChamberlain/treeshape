@@ -28,8 +28,9 @@
 #' unique(temp$model)
 #' }
 #' @export
-simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha, sigma, netmets) {
-  
+simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha, 
+	sigma, netmets = c("connectance", "links per species", "nestedness", "web asymmetry")) 
+{  
   trees_colless_plants <- simbal(t=tips, metric=metric, n=numtrees, cutlow = cutlow, cuthigh = cuthigh)
   trees_colless_plants_bal <- trees_colless_plants$bal # get the balanced trees
   trees_colless_plants_unbal <- trees_colless_plants$unbal # get the unbalanced trees
