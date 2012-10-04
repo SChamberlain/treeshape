@@ -6,7 +6,7 @@
 #' The Ornstein-Uhlenbeck code is commented out within the function right now
 #' 		as it was replaced pretty more or less with the early burst (EB) model.
 #' 		
-#' @import phytools ape plyr apTreeshape bipartite reshape2 geiger
+#' @import ape plyr apTreeshape bipartite reshape2 geiger
 #' @param tips Number of species to simulate in each tree - will be same for 
 #' 		all trees.
 #' @param metric Methods to use to generate trees, one of "colless", "beta", or  

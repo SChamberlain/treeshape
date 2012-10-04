@@ -26,5 +26,3 @@ Depends:
     reshape2,
     doMC,
     picante
-Suggests:
-    phytools
