@@ -32,7 +32,7 @@ trees2 <- rmtree(N=10, n=10)
 traitvecs <- lapply(trees, fastBM)
 traitvecs2 <- lapply(trees, fastBM)
 alltraits <- list(traitvecs, traitvecs2)
-sim_traits_nets(alltraits, "r", 1.5) # where r = ratio, you can abbreviate
+sim_traits_nets(alltraits, method="r", value=0.5) # where r = ratio, you can abbreviate
 }
 }
 

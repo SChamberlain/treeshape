@@ -13,7 +13,7 @@
 #' traitvecs <- lapply(trees, fastBM)
 #' traitvecs2 <- lapply(trees, fastBM)
 #' alltraits <- list(traitvecs, traitvecs2)
-#' sim_traits_nets(alltraits, "r", 1.5) # where r = ratio, you can abbreviate
+#' sim_traits_nets(alltraits, method="r", value=0.5) # where r = ratio, you can abbreviate
 #' }
 #' @export
 sim_traits_nets <- function(listoftraitvecs, 
@@ -23,11 +23,9 @@ sim_traits_nets <- function(listoftraitvecs,
   method <- match.arg(method, c("ratio","complementarity","barrier"))
   message(paste("Using the ", method, " method"))
   for(i in 1:length(listoftraitvecs[[1]])) {
-    # where the interaction occurs or not
-    ## Ratio - e.g., body size ratio, for gape limitation
     if(method == "ratio"){
       mm <- outer(listoftraitvecs[[1]][[i]], listoftraitvecs[[2]][[i]], 
-                  function(x,y) as.numeric(exp(x-y) < value)) 
+      						function(x,y) as.numeric(y/x < value)) 
     } else
       if(method == "complementarity"){
         mm <- outer(listoftraitvecs[[1]][[i]], listoftraitvecs[[2]][[i]], 
@@ -35,7 +33,7 @@ sim_traits_nets <- function(listoftraitvecs,
       }  else
         if(method == "barrier"){
           mm <- outer(listoftraitvecs[[1]][[i]], listoftraitvecs[[2]][[i]], 
-                      function(x,y) as.numeric(x > y))
+                      function(x,y) as.numeric(y > x))
         } else 
           stop("must be one of ratio, complementarity or barrier")
     dimnames(mm)[[1]] <- names(listoftraitvecs[[1]][[i]])
