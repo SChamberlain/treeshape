@@ -7,9 +7,6 @@
 #' 		as it was replaced pretty more or less with the early burst (EB) model.
 #' 		
 #' @import ape plyr apTreeshape bipartite reshape2 geiger
-#' @importFrom phytools fastBM
-#' @importFrom phytools pbtree
-#' @importFrom phytools nodeHeights
 #' @param tips Number of species to simulate in each tree - will be same for 
 #' 		all trees.
 #' @param metric Methods to use to generate trees, one of "colless", "beta", or  

@@ -16,6 +16,7 @@ Collate:
     'simbal.r'
     'simbaltrees.r'
     'traitsig.r'
+    'zzz.r'
 Depends:
     stringr,
     plyr,
@@ -26,5 +27,3 @@ Depends:
     reshape2,
     doMC,
     picante
-Suggests:
-    phytools
