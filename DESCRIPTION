@@ -26,4 +26,5 @@ Depends:
     ggplot2,
     reshape2,
     doMC,
-    picante
+    picante,
+    geiger
