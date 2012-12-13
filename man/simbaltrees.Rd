@@ -71,7 +71,6 @@
 \dontrun{
 netmets <- c("connectance", "links per species", "nestedness", "web asymmetry")
 temp <- simbaltrees(tips=10, metric="colless", numtrees=10, cutlow=-0.5, cuthigh=0.5, alpha_eb=-0.8, sigma_eb=3, rval=1.5, cval=2, netmets=netmets)
-unique(temp$model)
 }
 }
 

@@ -6,7 +6,10 @@
 #' The Ornstein-Uhlenbeck code is commented out within the function right now
 #' 		as it was replaced pretty more or less with the early burst (EB) model.
 #' 		
-#' @import phytools ape plyr apTreeshape bipartite reshape2 geiger
+#' @import ape plyr apTreeshape bipartite reshape2 geiger
+#' @importFrom phytools fastBM
+#' @importFrom phytools pbtree
+#' @importFrom phytools nodeHeights
 #' @param tips Number of species to simulate in each tree - will be same for 
 #' 		all trees.
 #' @param metric Methods to use to generate trees, one of "colless", "beta", or  
@@ -40,7 +43,6 @@
 #' @examples \dontrun{
 #' netmets <- c("connectance", "links per species", "nestedness", "web asymmetry")
 #' temp <- simbaltrees(tips=10, metric="colless", numtrees=10, cutlow=-0.5, cuthigh=0.5, alpha_eb=-0.8, sigma_eb=3, rval=1.5, cval=2, netmets=netmets)
-#' unique(temp$model)
 #' }
 #' @export
 simbaltrees <- function(tips = 10, metric, numtrees, cutlow, cuthigh, alpha, 
