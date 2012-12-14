@@ -12,7 +12,7 @@
 #' # Let's pretend these are balanced and unbalanced matrices
 #' m <- 10
 #' n <- 5
-#' netmets <- c("connectance", "links per species")
+#' netmets <- c("connectance", "links per species", "nodf2")
 #' mats_rand_bal <- replicate(20, matrix(rbinom(m * n, 1, .5), ncol = m, nrow = n), FALSE)
 #' mats_rand_unbal <- replicate(20, matrix(rbinom(m * n, 1, .5), ncol = m, nrow = n), FALSE)
 #' getnetmets(balanced = mats_rand_bal, unbalanced=mats_rand_unbal, netmets)
@@ -20,12 +20,15 @@
 #' @export
 getnetmets <- function(balanced, unbalanced, netmets) 
 {
-	nodf2_bal <- ldply(balanced, nested, method="NODF2")
-	nodf2_unbal <- ldply(unbalanced, nested, method="NODF2")
+	if( any(grepl("NODF2", netmets, ignore.case=T)) == TRUE )
+		nodf2_bal <- ldply(balanced, nested, method="NODF2")
+		nodf2_unbal <- ldply(unbalanced, nested, method="NODF2")	
   netmets_bal <- ldply(balanced, function(x) networklevel(x, index = netmets))
   netmets_unbal <- ldply(unbalanced, function(x) networklevel(x, index = netmets))
   temp <- data.frame( 
     type = c( rep("bal", length(balanced)), rep("unbal", length(unbalanced))), 
     rbind(netmets_bal, netmets_unbal) )
-	cbind(temp, rbind(nodf2_bal,nodf2_unbal))
+	if( any(grepl("NODF2", netmets, ignore.case=T)) == TRUE ){
+		cbind(temp, rbind(nodf2_bal,nodf2_unbal))
+	} else { temp }
 }
