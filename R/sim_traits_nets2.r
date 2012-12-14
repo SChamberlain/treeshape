@@ -1,5 +1,5 @@
 #' Simulate networks, with interactions propoprtional to trait matching
-#' 		
+#' 
 #' @param listoftraitvecs 
 #' @param method The model to be used to construct interaction matrices. One of
 #' 		"ratio","complementarity","barrier".

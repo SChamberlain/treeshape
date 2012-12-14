@@ -1,8 +1,8 @@
-\name{sim_traits_nets}
-\alias{sim_traits_nets}
+\name{sim_traits_nets2}
+\alias{sim_traits_nets2}
 \title{Simulate networks, with interactions propoprtional to trait matching}
 \usage{
-  sim_traits_nets(listoftraitvecs,
+  sim_traits_nets2(listoftraitvecs,
     method = c("ratio", "complementarity", "barrier"),
     value)
 }
@@ -32,7 +32,7 @@ trees2 <- rmtree(N=20, n=10)
 traitvecs <- lapply(trees, fastBM, bounds=c(0,Inf))
 traitvecs2 <- lapply(trees2, fastBM, bounds=c(0,Inf))
 alltraits <- list(traitvecs, traitvecs2)
-sim_traits_nets(listoftraitvecs=alltraits, "c", 2)
+sim_traits_nets2(listoftraitvecs=alltraits, method="c", value=1)
 }
 }
 

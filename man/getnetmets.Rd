@@ -24,10 +24,10 @@
 # Let's pretend these are balanced and unbalanced matrices
 m <- 10
 n <- 5
-netmets <- c("connectance", "links per species", "nestedness", "web asymmetry")
+netmets <- c("connectance", "links per species")
 mats_rand_bal <- replicate(20, matrix(rbinom(m * n, 1, .5), ncol = m, nrow = n), FALSE)
 mats_rand_unbal <- replicate(20, matrix(rbinom(m * n, 1, .5), ncol = m, nrow = n), FALSE)
-getnetmets(balanced = mats_rand_bal, mats_rand_unbal, netmets)
+getnetmets(balanced = mats_rand_bal, unbalanced=mats_rand_unbal, netmets)
 }
 }
 

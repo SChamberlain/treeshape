@@ -16,6 +16,8 @@ Collate:
     'simbal.r'
     'simbaltrees.r'
     'traitsig.r'
+    'sim_traits_nets2.r'
+    'sim_traits_ontrees.r'
     'zzz.r'
 Depends:
     stringr,

@@ -12,9 +12,8 @@
 }
 \examples{
 \dontrun{
-trees <- rmtree(N=10, n=10)
-traitvecs <- lapply(trees, fastBM)
-traitsig(traitvecs, trees)
+trees <- list(rmtree(N=50, n=10), rmtree(N=50, n=20))
+sim_rand_nets(trees)
 }
 }
 

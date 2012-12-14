@@ -8,12 +8,12 @@
 #' @return A data.frame of network structure metrics for balanced and unbalanced 
 #' 		trees.
 #' @examples \dontrun{
-trees <- rmtree(N=20, n=5)
-trees2 <- rmtree(N=20, n=10)
-traitvecs <- lapply(trees, fastBM, bounds=c(0,Inf))
-traitvecs2 <- lapply(trees2, fastBM, bounds=c(0,Inf))
-alltraits <- list(traitvecs, traitvecs2)
-sim_traits_nets(listoftraitvecs=alltraits, "c", 2)
+#' trees <- rmtree(N=20, n=5)
+#' trees2 <- rmtree(N=20, n=10)
+#' traitvecs <- lapply(trees, fastBM, bounds=c(0,Inf))
+#' traitvecs2 <- lapply(trees2, fastBM, bounds=c(0,Inf))
+#' alltraits <- list(traitvecs, traitvecs2)
+#' sim_traits_nets(listoftraitvecs=alltraits, "c", 2)
 #' }
 #' @export
 sim_traits_nets <- function(listoftraitvecs, 
