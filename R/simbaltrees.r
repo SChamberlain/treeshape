@@ -3,7 +3,7 @@
 #' Could use this in asking questions aobut how phylogenetic tree balance 
 #'     influences ____ (madlib it). 
 #' 		
-#' @import ape plyr apTreeshape bipartite reshape2 geiger phytools
+#' @import ape plyr apTreeshape bipartite reshape2 geiger
 #' @param tips_p Number of plant species to simulate in each tree - will be same for 
 #' 		all trees. The number of animal species will be calculated based on the value
 #' 		of the asymm parameter. 
