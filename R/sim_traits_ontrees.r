@@ -39,7 +39,7 @@ sim_traits_ontrees <- function(trees, model = c("bm","ou","eb"), a = 10,
 	bounds = c(0,100), alpha=1, sigma=1, theta=1, alpha_eb=-0.8, sigma_eb=3) 
 {
 	model <- match.arg(model, c("bm","ou","eb")) 
-	if(traitmodel=="bm"){
+	if(model=="bm"){
 		lapply(trees, fastBM, a = 10, bounds=c(0,100))
 	} else
 		if(model=="ou"){

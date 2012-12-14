@@ -90,7 +90,7 @@
 }
 \examples{
 \dontrun{
-netmets <- c("connectance", "nestedness")
+netmets <- c("connectance", "nestedness","nodf2")
 temp <- simbaltrees(tips_p=10, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, rval=1.5, cval=2, asymm=2, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
 head(temp)
 }
