@@ -4,8 +4,8 @@
 \usage{
   simbaltrees(tips_p = 10, metric, numtrees, cutlow,
     cuthigh, a, bounds, alpha, sigma, theta, alpha_eb,
-    sigma_eb, rval, cval, asymm = 1, dumpmatrices = FALSE,
-    matdir = "~",
+    sigma_eb, rval = NULL, cval = NULL, asymm = 1,
+    dumpmatrices = FALSE, matdir = "~",
     netmets = c("connectance", "links per species", "nestedness", "web asymmetry"))
 }
 \arguments{
@@ -91,8 +91,9 @@
 \examples{
 \dontrun{
 netmets <- c("connectance", "nestedness","nodf2")
-temp <- simbaltrees(tips_p=10, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, rval=1.5, cval=2, asymm=2, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
-head(temp)
+temp <- simbaltrees(tips_p=10, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.8, asymm=2, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
+head(temp[[1]]) # traits data.frame
+head(temp[[2]]) # network structure output data.frame
 }
 }
 
