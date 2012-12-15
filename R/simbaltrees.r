@@ -56,10 +56,12 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 	bounds, alpha, sigma, theta, alpha_eb, sigma_eb, rval = NULL, cval = NULL, asymm=1, 
 	dumpmatrices=FALSE, matdir = "~", netmets = c("connectance", "links per species", "nestedness", "web asymmetry")) 
 {
+	
 	### Calculate number of species for plants and animals
 	tips_a <- round(tips_p * asymm, 0)
 	
-	message("simulating trees...")
+	message("Simulating with tips_p of ", sum(tips_p,tips_a), "...")
+	message("...simulating trees...")
 	### plant trees
   trees_colless_plants <- simbal(t=tips_p, metric=metric, n=numtrees, 
   															 cutlow = cutlow, cuthigh = cuthigh)
@@ -73,7 +75,7 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
   trees_colless_anim_unbal <- trees_colless_anim$unbal # get the unbalanced trees
   
   ################## Simulate traits on each tree
-	message("simulating traits on trees...")
+	message("...simulating traits on trees...")
   # Plants
   ## Brownian motion traits
   t1_col_plants_bal_bm <- sim_traits_ontrees(trees_colless_plants_bal, "bm", a=a, bounds=bounds)
@@ -101,7 +103,7 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 	t1_col_anim_unbal_eb <- sim_traits_ontrees(trees_colless_anim_unbal, "eb", alpha_eb=alpha_eb, sigma_eb=sigma_eb)
 	
   ################## Measure aspects of traits on trees
-	message("measuring trait characteristics...")
+	message("...measuring trait characteristics...")
   # Plants
   t_p_bal_bm <- traitsig(t1_col_plants_bal_bm, trees_colless_plants_bal)
   t_p_bal_ou <- traitsig(t1_col_plants_bal_ou, trees_colless_plants_bal)
@@ -161,7 +163,7 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
   all_t1_unbal_eb <- list(t1_col_plants_unbal_eb, t1_col_anim_unbal_eb)
   
   ################## Simulate networks on each tree
-	message("simulating networks using traits...")
+	message("...simulating networks using traits...")
   # Simulate completely random networks, regardless of traits, etc.
   mats_rand_bal <- sim_rand_nets(tree_pairs_bal)
   mats_rand_unbal <- sim_rand_nets(tree_pairs_unbal)
@@ -193,7 +195,7 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
   mats_traits1_unbal_eb_barr <- sim_traits_nets2(all_t1_unbal_eb, method = "b")
   
 	################## Calculate network metrics on matrices
-	message("calculating network structures...")
+	message("...calculating network structures...")
   df_rand <- getnetmets(mats_rand_bal, mats_rand_unbal, netmets=netmets) # random networks
   
   ## BM
@@ -226,7 +228,7 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 # 		dir.create(file.path(matdir), showWarnings=FALSE)
 		for(i in 1:length(matsnames)) {
 			for(j in 1:length(matsall[[i]])) {
-				write.table(matsall[[i]][[j]], file=paste(matdir, "/", matsnames[[i]], "_", j, ".web", sep=""), row.names=F, col.names=F)
+				write.table(matsall[[i]][[j]], file=paste(matdir, "/", "sp", sum(tips_p,tips_a), "_", matsnames[[i]], "_", j, ".web", sep=""), row.names=F, col.names=F)
 # 				write.table(matsall[[i]][[j]], file=paste(matsnames[[i]], "_", j, ".web", sep=""), row.names=F, col.names=F)
 			}
 		}
