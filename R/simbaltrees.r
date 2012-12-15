@@ -60,7 +60,7 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 	### Calculate number of species for plants and animals
 	tips_a <- round(tips_p * asymm, 0)
 	
-	message("Simulating with tips_p of ", sum(tips_p,tips_a), "...")
+	message("Simulating with tips_p=", tips_p, " and tips_a=", tips_a, "...")
 	message("...simulating trees...")
 	### plant trees
   trees_colless_plants <- simbal(t=tips_p, metric=metric, n=numtrees, 
