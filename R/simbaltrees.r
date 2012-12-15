@@ -47,7 +47,7 @@
 #' 		trees.
 #' @examples \dontrun{
 #' netmets <- c("connectance", "nestedness","nodf2")
-#' temp <- simbaltrees(tips_p=10, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.8, asymm=2, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
+#' temp <- simbaltrees(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
 #' head(temp[[1]]) # traits data.frame
 #' head(temp[[2]]) # network structure output data.frame
 #' }

@@ -21,8 +21,9 @@ sim_traits_nets2 <- function(listoftraitvecs,
 {
 	mats <- list()
 	method <- match.arg(method, c("ratio","complementarity","barrier"))
-# 	message(paste("Using the", method, "method"))
-	for(i in 1:length(listoftraitvecs[[1]])) {
+	
+	
+	for(i in 1:length(listoftraitvecs[[1]])) { # start loop
 		# where the interaction occurs or not
 		## Ratio - e.g., body size ratio, for gape limitation
 		if(method == "ratio"){
@@ -70,6 +71,7 @@ sim_traits_nets2 <- function(listoftraitvecs,
 		}
 		mm <- doit(mmm)
 		mats[[i]] <- mm
-	}
+	} # end loop
+	
 	mats[!sapply(mats, is.null)]
 }
