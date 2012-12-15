@@ -38,6 +38,7 @@
 #' 		the traditional definition like (Na-Np/Na+Np), where Na is number of animal
 #' 		species, and Np is number of plant species. For example, asymm=2 would mean
 #' 		twice as many animal as plant species.
+#' @param cores Number of cores to use in mcmapply in simulating networks form traits.
 #' @param dumpmatrices If FALSE (default) matrices are not spit out to file, but
 #' 		if TRUE, then matrices are written to file in separate folders for each (logical)
 #' @param matdir Directory to output matrices to. Ignored if dumpmatrices=FALSE.
@@ -47,13 +48,13 @@
 #' 		trees.
 #' @examples \dontrun{
 #' netmets <- c("connectance", "nestedness","nodf2")
-#' temp <- simbaltrees(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
+#' temp <- simbaltrees(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, cores=4, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
 #' head(temp[[1]]) # traits data.frame
 #' head(temp[[2]]) # network structure output data.frame
 #' }
 #' @export
 simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a, 
-	bounds, alpha, sigma, theta, alpha_eb, sigma_eb, rval = NULL, cval = NULL, asymm=1, 
+	bounds, alpha, sigma, theta, alpha_eb, sigma_eb, rval = NULL, cval = NULL, asymm=1, cores = 2,
 	dumpmatrices=FALSE, matdir = "~", netmets = c("connectance", "links per species", "nestedness", "web asymmetry")) 
 {
 	
@@ -170,29 +171,29 @@ simbaltrees <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
   
   # complementarity	
   ## BM
-  mats_traits1_bal_bm_comp <- sim_traits_nets2(all_t1_bal_bm, method = "c", value = cval)
-  mats_traits1_unbal_bm_comp <- sim_traits_nets2(all_t1_unbal_bm, method = "c", value = cval)
+  mats_traits1_bal_bm_comp <- sim_traits_nets_par(all_t1_bal_bm, method = "c", value = cval, cores=cores)
+  mats_traits1_unbal_bm_comp <- sim_traits_nets_par(all_t1_unbal_bm, method = "c", value = cval, cores=cores)
 
   ## OU
-  mats_traits1_bal_ou_comp <- sim_traits_nets2(all_t1_bal_ou, method = "c", value = cval)
-  mats_traits1_unbal_ou_comp <- sim_traits_nets2(all_t1_unbal_ou, method = "c", value = cval)
+  mats_traits1_bal_ou_comp <- sim_traits_nets_par(all_t1_bal_ou, method = "c", value = cval, cores=cores)
+  mats_traits1_unbal_ou_comp <- sim_traits_nets_par(all_t1_unbal_ou, method = "c", value = cval, cores=cores)
   
   ## EB
-  mats_traits1_bal_eb_comp <- sim_traits_nets2(all_t1_bal_eb, method = "c", value = cval)
-  mats_traits1_unbal_eb_comp <- sim_traits_nets2(all_t1_unbal_eb, method = "c", value = cval)
+  mats_traits1_bal_eb_comp <- sim_traits_nets_par(all_t1_bal_eb, method = "c", value = cval, cores=cores)
+  mats_traits1_unbal_eb_comp <- sim_traits_nets_par(all_t1_unbal_eb, method = "c", value = cval, cores=cores)
   
   # barrier (no need to give value parameter)
   ## BM
-  mats_traits1_bal_bm_barr <- sim_traits_nets2(all_t1_bal_bm, method = "b")
-  mats_traits1_unbal_bm_barr <- sim_traits_nets2(all_t1_unbal_bm, method = "b")
+  mats_traits1_bal_bm_barr <- sim_traits_nets_par(all_t1_bal_bm, method = "b", cores=cores)
+  mats_traits1_unbal_bm_barr <- sim_traits_nets_par(all_t1_unbal_bm, method = "b", cores=cores)
 
   ## OU
-  mats_traits1_bal_ou_barr <- sim_traits_nets2(all_t1_bal_ou, method = "b")
-  mats_traits1_unbal_ou_barr <- sim_traits_nets2(all_t1_unbal_ou, method = "b")
+  mats_traits1_bal_ou_barr <- sim_traits_nets_par(all_t1_bal_ou, method = "b", cores=cores)
+  mats_traits1_unbal_ou_barr <- sim_traits_nets_par(all_t1_unbal_ou, method = "b", cores=cores)
   
   ## EB
-  mats_traits1_bal_eb_barr <- sim_traits_nets2(all_t1_bal_eb, method = "b")
-  mats_traits1_unbal_eb_barr <- sim_traits_nets2(all_t1_unbal_eb, method = "b")
+  mats_traits1_bal_eb_barr <- sim_traits_nets_par(all_t1_bal_eb, method = "b", cores=cores)
+  mats_traits1_unbal_eb_barr <- sim_traits_nets_par(all_t1_unbal_eb, method = "b", cores=cores)
   
 	################## Calculate network metrics on matrices
 	message("...calculating network structures...")

@@ -5,7 +5,7 @@
   simbaltrees(tips_p = 10, metric, numtrees, cutlow,
     cuthigh, a, bounds, alpha, sigma, theta, alpha_eb,
     sigma_eb, rval = NULL, cval = NULL, asymm = 1,
-    dumpmatrices = FALSE, matdir = "~",
+    cores = 2, dumpmatrices = FALSE, matdir = "~",
     netmets = c("connectance", "links per species", "nestedness", "web asymmetry"))
 }
 \arguments{
@@ -69,6 +69,9 @@
   Np is number of plant species. For example, asymm=2 would
   mean twice as many animal as plant species.}
 
+  \item{cores}{Number of cores to use in mcmapply in
+  simulating networks form traits.}
+
   \item{dumpmatrices}{If FALSE (default) matrices are not
   spit out to file, but if TRUE, then matrices are written
   to file in separate folders for each (logical)}
@@ -91,7 +94,7 @@
 \examples{
 \dontrun{
 netmets <- c("connectance", "nestedness","nodf2")
-temp <- simbaltrees(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
+temp <- simbaltrees(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, cores=4, dumpmatrices=TRUE, matdir="~/newfiles2", netmets=netmets)
 head(temp[[1]]) # traits data.frame
 head(temp[[2]]) # network structure output data.frame
 }
