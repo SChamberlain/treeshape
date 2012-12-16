@@ -19,11 +19,12 @@
 #' traitvecs2 <- llply(trees2, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 #' alltraits <- list(traitvecs, traitvecs2)
 #' sim_traits_nets_par(listoftraitvecs=alltraits, method="c", value=0.2, type="bal", traitm="bm", matdir="~/newfiles2")
+#' sim_traits_nets_par(listoftraitvecs=alltraits, method="b", type="bal", traitm="bm", matdir="~/newfiles2")
 #' length(out)
 #' }
 #' @export
 sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, matdir = "~",
-		method = c("ratio","complementarity","barrier"), value) 
+		method = c("ratio","complementarity","barrier"), value = NULL) 
 {
 	doit <- function(x) {
 		ui <- function(x) if( sum(x)==0 ){replace(x, sample(grep(0, x), 1), 1)} else{x}

@@ -93,7 +93,7 @@
 \examples{
 \dontrun{
 temp <- simbaltrees_topy(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, cores=4, matdir="~/newfiles2")
-head(temp[[1]]) # traits data.frame
+head(temp) # traits data.frame
 }
 }
 

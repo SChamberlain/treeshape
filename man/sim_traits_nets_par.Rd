@@ -5,7 +5,7 @@
   sim_traits_nets_par(listoftraitvecs, type = NULL,
     traitm = NULL, matdir = "~",
     method = c("ratio", "complementarity", "barrier"),
-    value)
+    value = NULL)
 }
 \arguments{
   \item{listoftraitvecs}{}
@@ -41,6 +41,7 @@ traitvecs <- llply(trees, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 traitvecs2 <- llply(trees2, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 alltraits <- list(traitvecs, traitvecs2)
 sim_traits_nets_par(listoftraitvecs=alltraits, method="c", value=0.2, type="bal", traitm="bm", matdir="~/newfiles2")
+sim_traits_nets_par(listoftraitvecs=alltraits, method="b", type="bal", traitm="bm", matdir="~/newfiles2")
 length(out)
 }
 }
