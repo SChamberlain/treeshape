@@ -5,7 +5,8 @@
   simbaltrees_topy(tips_p = 10, metric, numtrees, cutlow,
     cuthigh, a, bounds, alpha, sigma, theta, alpha_eb,
     sigma_eb, rval = NULL, cval = NULL, asymm = 1,
-    cores = 2, dumpmatrices = TRUE, matdir = "~")
+    cores = 2, dumpmatrices = TRUE, matdir = "~",
+    modeltorun = "complementarity")
 }
 \arguments{
   \item{tips_p}{Number of plant species to simulate in each

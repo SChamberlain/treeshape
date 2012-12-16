@@ -24,7 +24,7 @@
 #' }
 #' @export
 sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, matdir = "~",
-		method = c("ratio","complementarity","barrier"), value = NULL) 
+		method = c("complementarity","barrier"), value = NULL) 
 {
 	doit <- function(x) {
 		ui <- function(x) if( sum(x)==0 ){replace(x, sample(grep(0, x), 1), 1)} else{x}

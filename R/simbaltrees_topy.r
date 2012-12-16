@@ -53,7 +53,7 @@
 #' @export
 simbaltrees_topy <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a, 
 		bounds, alpha, sigma, theta, alpha_eb, sigma_eb, rval = NULL, cval = NULL, asymm=1, cores = 2,
-		dumpmatrices=TRUE, matdir = "~") 
+		dumpmatrices=TRUE, matdir = "~", modeltorun="complementarity") 
 {
 	### Calculate number of species for plants and animals
 	tips_a <- round(tips_p * asymm, 0)
@@ -166,31 +166,34 @@ simbaltrees_topy <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 # 	mats_rand_bal <- sim_rand_nets(tree_pairs_bal)
 # 	mats_rand_unbal <- sim_rand_nets(tree_pairs_unbal)
 	
-	# complementarity	
-	## BM
-	sim_traits_nets_par(all_t1_bal_bm, method = "c", value = cval, type="bal", traitm="bm", matdir=matdir)
-	sim_traits_nets_par(all_t1_unbal_bm, method = "c", value = cval, type="unbal", traitm="bm", matdir=matdir)
-	
-	## OU
-	sim_traits_nets_par(all_t1_bal_ou, method = "c", value = cval, type="bal", traitm="ou", matdir=matdir)
-	sim_traits_nets_par(all_t1_unbal_ou, method = "c", value = cval, type="unbal", traitm="ou", matdir=matdir)
-	
-	## EB
-	sim_traits_nets_par(all_t1_bal_eb, method = "c", value = cval, type="bal", traitm="eb", matdir=matdir)
-	sim_traits_nets_par(all_t1_unbal_eb, method = "c", value = cval, type="unbal", traitm="eb", matdir=matdir)
-	
-	# barrier (no need to give value parameter)
-	## BM
-	sim_traits_nets_par(all_t1_bal_bm, method = "b", type="bal", traitm="bm", matdir=matdir)
-	sim_traits_nets_par(all_t1_unbal_bm, method = "b", type="unbal", traitm="bm", matdir=matdir)
-	
-	## OU
-	sim_traits_nets_par(all_t1_bal_ou, method = "b", type="bal", traitm="ou", matdir=matdir)
-	sim_traits_nets_par(all_t1_unbal_ou, method = "b", type="unbal", traitm="ou", matdir=matdir)
-	
-	## EB
-	sim_traits_nets_par(all_t1_bal_eb, method = "b", type="bal", traitm="eb", matdir=matdir)
-	sim_traits_nets_par(all_t1_unbal_eb, method = "b", type="unbal", traitm="eb", matdir=matdir)
+	if(modeltorun=="complementarity"){
+		# complementarity	
+		## BM
+		sim_traits_nets_par(all_t1_bal_bm, method = "c", value = cval, type="bal", traitm="bm", matdir=matdir)
+		sim_traits_nets_par(all_t1_unbal_bm, method = "c", value = cval, type="unbal", traitm="bm", matdir=matdir)
+		
+		## OU
+		sim_traits_nets_par(all_t1_bal_ou, method = "c", value = cval, type="bal", traitm="ou", matdir=matdir)
+		sim_traits_nets_par(all_t1_unbal_ou, method = "c", value = cval, type="unbal", traitm="ou", matdir=matdir)
+		
+		## EB
+		sim_traits_nets_par(all_t1_bal_eb, method = "c", value = cval, type="bal", traitm="eb", matdir=matdir)
+		sim_traits_nets_par(all_t1_unbal_eb, method = "c", value = cval, type="unbal", traitm="eb", matdir=matdir)
+	} else
+		if(modeltorun=="barrier"){
+			# barrier (no need to give value parameter)
+			## BM
+			sim_traits_nets_par(all_t1_bal_bm, method = "b", type="bal", traitm="bm", matdir=matdir)
+			sim_traits_nets_par(all_t1_unbal_bm, method = "b", type="unbal", traitm="bm", matdir=matdir)
+			
+			## OU
+			sim_traits_nets_par(all_t1_bal_ou, method = "b", type="bal", traitm="ou", matdir=matdir)
+			sim_traits_nets_par(all_t1_unbal_ou, method = "b", type="unbal", traitm="ou", matdir=matdir)
+			
+			## EB
+			sim_traits_nets_par(all_t1_bal_eb, method = "b", type="bal", traitm="eb", matdir=matdir)
+			sim_traits_nets_par(all_t1_unbal_eb, method = "b", type="unbal", traitm="eb", matdir=matdir)
+		}
 	
 # 	################## Calculate network metrics on matrices
 # 	message("...calculating network structures...")

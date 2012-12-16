@@ -4,8 +4,7 @@
 \usage{
   sim_traits_nets_par(listoftraitvecs, type = NULL,
     traitm = NULL, matdir = "~",
-    method = c("ratio", "complementarity", "barrier"),
-    value = NULL)
+    method = c("complementarity", "barrier"), value = NULL)
 }
 \arguments{
   \item{listoftraitvecs}{}
