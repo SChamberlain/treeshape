@@ -21,6 +21,7 @@ Collate:
     'zzz.r'
     'simbal_plot.r'
     'sim_traits_nets_par.r'
+    'simbaltrees_topy.r'
 Depends:
     stringr,
     plyr,

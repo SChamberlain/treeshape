@@ -2,12 +2,19 @@
 \alias{sim_traits_nets_par}
 \title{Simulate networks, with interactions propoprtional to trait matching}
 \usage{
-  sim_traits_nets_par(listoftraitvecs, cores = 2,
+  sim_traits_nets_par(listoftraitvecs, type = NULL,
+    traitm = NULL, matdir = "~",
     method = c("ratio", "complementarity", "barrier"),
     value)
 }
 \arguments{
   \item{listoftraitvecs}{}
+
+  \item{type}{}
+
+  \item{traitm}{}
+
+  \item{matdir}{}
 
   \item{method}{The model to be used to construct
   interaction matrices. One of
@@ -27,13 +34,13 @@
 }
 \examples{
 \dontrun{
-trees <- rmtree(N=1000, n=60)
-trees2 <- rmtree(N=1000, n=120)
+trees <- rmtree(N=100, n=15)
+trees2 <- rmtree(N=100, n=30)
 registerDoMC(4)
 traitvecs <- llply(trees, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 traitvecs2 <- llply(trees2, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 alltraits <- list(traitvecs, traitvecs2)
-out<-sim_traits_nets_par(listoftraitvecs=alltraits, method="c", value=0.5, cores=4)
+sim_traits_nets_par(listoftraitvecs=alltraits, method="c", value=0.2, type="bal", traitm="bm", matdir="~/newfiles2")
 length(out)
 }
 }
