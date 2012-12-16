@@ -47,7 +47,7 @@
 #' @return A data.frame of network structure metrics for balanced and unbalanced 
 #' 		trees.
 #' @examples \dontrun{
-#' temp <- simbaltrees_topy(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, cores=4, matdir="~/newfiles2")
+#' temp <- simbaltrees_topy(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, matdir="~/newfiles2", modeltorun="complementarity")
 #' head(temp) # traits data.frame
 #' }
 #' @export
@@ -262,6 +262,7 @@ simbaltrees_topy <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 # 	alldat$numsp_p <- rep(tips_p, nrow(alldat))
 # 	alldat$numsp_a <- rep(tips_a, nrow(alldat))
 # 	alldat$numsp_all <- rep(sum(tips_a,tips_p), nrow(alldat))
+	write.csv(traits_df, paste(matdir, "/sp", sum(tips_p,tips_a), substring(modeltorun, 1, 4), ".csv", sep=""), row.names=F)
 	message("...done.")
-	return( traits_df )
+# 	return( traits_df )
 }

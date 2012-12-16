@@ -39,36 +39,40 @@ sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, mat
 	
 	for(i in 1:length(listoftraitvecs[[1]])) {
 		if(method == "complementarity"){
-			
-			mmm <- NULL
-			while(is.null(mmm)){
+# 			mmm <- NULL
+# 			while(is.null(mmm)){
+			one <- listoftraitvecs[[1]][[i]]
+			two <- listoftraitvecs[[2]][[i]]
+			mm <- outer(one, two, function(x,y) as.numeric(abs(x-y) < value))
+			# Remove any matrices that have all zeros or all ones
+			if(sum(mm) == 0) { mmm <- NULL } else 
+				if( sum(mm) == nrow(mm) * ncol(mm) ) {mmm <- NULL } else
+				{ mmm <- mm }
+# 			}
+			if(is.null(mmm)){NULL} else 
+			{
+				mmm <- doit(mmm)
+				write.table(mmm, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
+																		"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""), row.names=F, col.names=F)
+			}
+		}  else
+			if(method == "barrier"){			
+# 				mmm <- NULL
+# 				while(is.null(mmm)){
 				one <- listoftraitvecs[[1]][[i]]
 				two <- listoftraitvecs[[2]][[i]]
-				mm <- outer(one, two, function(x,y) as.numeric(abs(x-y) < value))
+				mm <- outer(one, two, function(x,y) as.numeric(x > y))
 				# Remove any matrices that have all zeros or all ones
 				if(sum(mm) == 0) { mmm <- NULL } else 
 					if( sum(mm) == nrow(mm) * ncol(mm) ) {mmm <- NULL } else
 					{ mmm <- mm }
-			}
-			mmm <- doit(mmm)
-			write.table(mmm, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
-				"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""), row.names=F, col.names=F)
-		}  else
-			if(method == "barrier"){
-				
-				mmm <- NULL
-				while(is.null(mmm)){
-					one <- listoftraitvecs[[1]][[i]]
-					two <- listoftraitvecs[[2]][[i]]
-					mm <- outer(one, two, function(x,y) as.numeric(x > y))
-					# Remove any matrices that have all zeros or all ones
-					if(sum(mm) == 0) { mmm <- NULL } else 
-						if( sum(mm) == nrow(mm) * ncol(mm) ) {mmm <- NULL } else
-						{ mmm <- mm }
+# 				}
+				if(is.null(mmm)){NULL} else 
+				{
+					mmm <- doit(mmm)
+					write.table(mmm, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
+																			"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""), row.names=F, col.names=F)
 				}
-				mmm <- doit(mmm)
-				write.table(mmm, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
-					"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""), row.names=F, col.names=F)
 			} else 
 				stop("must be one of complementarity or barrier, or their abbreviations")
 	} # end of loop
