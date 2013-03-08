@@ -6,7 +6,7 @@
     cuthigh, a, bounds, alpha, sigma, theta, alpha_eb,
     sigma_eb, rval = NULL, cval = NULL, asymm = 1,
     cores = 2, dumpmatrices = TRUE, matdir = "~",
-    modeltorun = "complementarity")
+    modeltorun = "complementarity", output = "matrix")
 }
 \arguments{
   \item{tips_p}{Number of plant species to simulate in each
@@ -82,6 +82,8 @@
   \item{netmets}{Network structure metrics to calculate -
   only use those that calculate single values for each
   matrix.}
+
+  \item{output}{One of matrix or edgelist.}
 }
 \value{
   A data.frame of network structure metrics for balanced

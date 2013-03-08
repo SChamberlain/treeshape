@@ -4,7 +4,8 @@
 \usage{
   sim_traits_nets_par(listoftraitvecs, type = NULL,
     traitm = NULL, matdir = "~",
-    method = c("complementarity", "barrier"), value = NULL)
+    method = c("complementarity", "barrier"), value = NULL,
+    output = "matrix")
 }
 \arguments{
   \item{listoftraitvecs}{}
@@ -22,6 +23,8 @@
   \item{value}{Value at which to determine if species
   interact or not - this value depends on the model you are
   using.}
+
+  \item{output}{One of matrix or edgelist.}
 }
 \value{
   A data.frame of network structure metrics for balanced
@@ -35,6 +38,7 @@
 \dontrun{
 trees <- rmtree(N=100, n=15)
 trees2 <- rmtree(N=100, n=30)
+library(doMC)
 registerDoMC(4)
 traitvecs <- llply(trees, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 traitvecs2 <- llply(trees2, fastBM, bounds=c(0,Inf), .parallel=TRUE)

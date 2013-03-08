@@ -1,6 +1,6 @@
 #' Simulate networks, with interactions propoprtional to trait matching
 #' 
-#' @import parallel
+#' @import parallel bipartite
 #' @param listoftraitvecs 
 #' @param type
 #' @param traitm
@@ -9,11 +9,13 @@
 #' 		"ratio","complementarity","barrier".
 #' @param value Value at which to determine if species interact or not - 
 #' 		this value depends on the model you are using.
+#' @param output One of matrix or edgelist.
 #' @return A data.frame of network structure metrics for balanced and unbalanced 
 #' 		trees.
 #' @examples \dontrun{
 #' trees <- rmtree(N=100, n=15)
 #' trees2 <- rmtree(N=100, n=30)
+#' library(doMC)
 #' registerDoMC(4)
 #' traitvecs <- llply(trees, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 #' traitvecs2 <- llply(trees2, fastBM, bounds=c(0,Inf), .parallel=TRUE)
@@ -24,7 +26,7 @@
 #' }
 #' @export
 sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, matdir = "~",
-		method = c("complementarity","barrier"), value = NULL) 
+		method = c("complementarity","barrier"), value = NULL, output = "matrix") 
 {
 	doit <- function(x) {
 		ui <- function(x) if( sum(x)==0 ){replace(x, sample(grep(0, x), 1), 1)} else{x}
@@ -39,8 +41,6 @@ sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, mat
 	
 	for(i in 1:length(listoftraitvecs[[1]])) {
 		if(method == "complementarity"){
-# 			mmm <- NULL
-# 			while(is.null(mmm)){
 			one <- listoftraitvecs[[1]][[i]]
 			two <- listoftraitvecs[[2]][[i]]
 			mm <- outer(one, two, function(x,y) as.numeric(abs(x-y) < value))
@@ -48,17 +48,22 @@ sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, mat
 			if(sum(mm) == 0) { mmm <- NULL } else 
 				if( sum(mm) == nrow(mm) * ncol(mm) ) {mmm <- NULL } else
 				{ mmm <- mm }
-# 			}
 			if(is.null(mmm)){NULL} else 
 			{
 				mmm <- doit(mmm)
-				write.table(mmm, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
-																		"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""), row.names=F, col.names=F)
+				
+				if(output=="matrix"){
+					write.table(mmm, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
+																			"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""), row.names=F, col.names=F)
+				} else
+				{
+					edgelist <- web2edges(mmm, out.files="", weight.column=FALSE, return=TRUE)
+					write.table(edgelist, row.names=FALSE, col.names=FALSE, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
+																														"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""))
+				}
 			}
 		}  else
 			if(method == "barrier"){			
-# 				mmm <- NULL
-# 				while(is.null(mmm)){
 				one <- listoftraitvecs[[1]][[i]]
 				two <- listoftraitvecs[[2]][[i]]
 				mm <- outer(one, two, function(x,y) as.numeric(x > y))
@@ -66,12 +71,19 @@ sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, mat
 				if(sum(mm) == 0) { mmm <- NULL } else 
 					if( sum(mm) == nrow(mm) * ncol(mm) ) {mmm <- NULL } else
 					{ mmm <- mm }
-# 				}
 				if(is.null(mmm)){NULL} else 
 				{
 					mmm <- doit(mmm)
+					
+					if(output=="matrix"){
 					write.table(mmm, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
 																			"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""), row.names=F, col.names=F)
+					} else
+					{
+						edgelist <- web2edges(mmm, out.files="", weight.column=FALSE, return=TRUE)
+						write.table(edgelist, row.names=FALSE, col.names=FALSE, file=paste(matdir, "/", "sp", sum(length(one),length(two)),
+																															"_",type,"_",traitm,"_",substring(method, 1, 4),"_",i,".web", sep=""))
+					}
 				}
 			} else 
 				stop("must be one of complementarity or barrier, or their abbreviations")
