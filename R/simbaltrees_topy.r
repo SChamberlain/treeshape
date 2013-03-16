@@ -4,9 +4,9 @@
 #'     influences ____ (madlib it). 
 #' 		
 #' @import ape plyr apTreeshape bipartite reshape2 geiger
-#' @param tips_p Number of plant species to simulate in each tree - will be same for 
-#' 		all trees. The number of animal species will be calculated based on the value
-#' 		of the asymm parameter. 
+#' @param networksize Number of total species to simulate in each tree - will be same for 
+#' 		all trees. The number of plant and animal species will be calculated based 
+#' 		on the value of the asymm parameter. 
 #' @param metric Methods to use to generate trees, one of "colless", "beta", or  
 #' 		gamma (see details). Defaults to "colless".
 #' @param numtrees Number of trees to produce. Defaults to 10 trees.
@@ -48,16 +48,27 @@
 #' @return A data.frame of network structure metrics for balanced and unbalanced 
 #' 		trees.
 #' @examples \dontrun{
-#' temp <- simbaltrees_topy(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, matdir="~/newfiles2", modeltorun="complementarity", output="edgelist")
+#' temp <- simbaltrees_topy(networksize=30, metric="colless", numtrees=5, cutlow=-0.7, cuthigh=0.7, a=10, bounds=c(0,100), alpha=10, sigma=3, alpha_eb=-1.1, sigma_eb=3, cval=0.5, asymm=2, matdir="~/testtest", modeltorun="complementarity", output="edgelist", includetraitvar = TRUE)
 #' head(temp) # traits data.frame
 #' }
 #' @export
-simbaltrees_topy <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a, 
-		bounds, alpha, sigma, theta, alpha_eb, sigma_eb, rval = NULL, cval = NULL, asymm=1, cores = 2,
-		dumpmatrices=TRUE, matdir = "~", modeltorun="complementarity", output = "matrix") 
+simbaltrees_topy <- function(networksize = 10, metric, numtrees, cutlow, cuthigh, a, 
+		bounds, alpha, sigma, theta, alpha_eb, sigma_eb, rval = NULL, cval = NULL, asymm=2.47, cores = 2,
+		dumpmatrices=TRUE, matdir = "~", modeltorun="complementarity", output = "matrix", 
+		includetraitvar = FALSE)
 {
 	### Calculate number of species for plants and animals
-	tips_a <- round(tips_p * asymm, 0)
+	getnumspp <- function(networksize){
+		numpolls = networksize * asymm / (asymm+1)
+		numplants = networksize - numpolls
+		ratio = round(numpolls,0)/round(numplants,0)
+		data.frame(numpolls=round(numpolls,0), numplants=round(numplants,0), ratio=ratio)
+	}
+	numsppout <- getnumspp(networksize)
+	tips_a <- numsppout$numpolls
+	tips_p <- numsppout$numplants
+	
+# 	tips_a <- round(tips_p * asymm, 0)
 	
 	message("Simulating with tips_p=", tips_p, " and tips_a=", tips_a, "...")
 	message("...simulating trees...")
@@ -170,16 +181,16 @@ simbaltrees_topy <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 	if(modeltorun=="complementarity"){
 		# complementarity	
 		## BM
-		sim_traits_nets_par(all_t1_bal_bm, method = "c", value = cval, type="bal", traitm="bm", matdir=matdir, output=output)
-		sim_traits_nets_par(all_t1_unbal_bm, method = "c", value = cval, type="unbal", traitm="bm", matdir=matdir, output=output)
+		sim_traits_nets_par(all_t1_bal_bm, method = "c", value = cval, type="bal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
+		sim_traits_nets_par(all_t1_unbal_bm, method = "c", value = cval, type="unbal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
 		
 		## OU
-		sim_traits_nets_par(all_t1_bal_ou, method = "c", value = cval, type="bal", traitm="ou", matdir=matdir, output=output)
-		sim_traits_nets_par(all_t1_unbal_ou, method = "c", value = cval, type="unbal", traitm="ou", matdir=matdir, output=output)
+		sim_traits_nets_par(all_t1_bal_ou, method = "c", value = cval, type="bal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
+		sim_traits_nets_par(all_t1_unbal_ou, method = "c", value = cval, type="unbal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
 		
 		## EB
-		sim_traits_nets_par(all_t1_bal_eb, method = "c", value = cval, type="bal", traitm="eb", matdir=matdir, output=output)
-		sim_traits_nets_par(all_t1_unbal_eb, method = "c", value = cval, type="unbal", traitm="eb", matdir=matdir, output=output)
+		sim_traits_nets_par(all_t1_bal_eb, method = "c", value = cval, type="bal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
+		sim_traits_nets_par(all_t1_unbal_eb, method = "c", value = cval, type="unbal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
 	} else
 		if(modeltorun=="barrier"){
 			# barrier (no need to give value parameter)
@@ -194,13 +205,27 @@ simbaltrees_topy <- function(tips_p = 10, metric, numtrees, cutlow, cuthigh, a,
 			## EB
 			sim_traits_nets_par(all_t1_bal_eb, method = "b", type="bal", traitm="eb", matdir=matdir, output=output)
 			sim_traits_nets_par(all_t1_unbal_eb, method = "b", type="unbal", traitm="eb", matdir=matdir, output=output)
-		}
+		} else
+			if(modeltorun=="twomethods"){
+				# combined, complementarity+barrier
+				## BM
+				sim_traits_nets_par(all_t1_bal_bm, method = "b", type="bal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_unbal_bm, method = "b", type="unbal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				
+				## OU
+				sim_traits_nets_par(all_t1_bal_ou, method = "b", type="bal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_unbal_ou, method = "b", type="unbal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				
+				## EB
+				sim_traits_nets_par(all_t1_bal_eb, method = "b", type="bal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_unbal_eb, method = "b", type="unbal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
+			}
 	
 # 	################## Calculate network metrics on matrices
 # 	message("...calculating network structures...")
 # 	df_rand <- getnetmets(mats_rand_bal, mats_rand_unbal, netmets=netmets) # random networks
-# 	
-# 	## BM
+	
+	## BM
 # 	df_traits1_bm_comp <- getnetmets(mats_traits1_bal_bm_comp, mats_traits1_unbal_bm_comp, netmets=netmets) # complementarity traits
 # 	df_traits1_bm_barr <- getnetmets(mats_traits1_bal_bm_barr, mats_traits1_unbal_bm_barr, netmets=netmets) # barrier traits
 # 	

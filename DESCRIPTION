@@ -22,6 +22,7 @@ Collate:
     'simbal_plot.r'
     'sim_traits_nets_par.r'
     'simbaltrees_topy.r'
+    'edgelist2matrix.r'
 Depends:
     stringr,
     plyr,

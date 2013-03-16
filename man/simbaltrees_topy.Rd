@@ -2,17 +2,18 @@
 \alias{simbaltrees_topy}
 \title{Simulate a set of balanced and unbalanced trees.}
 \usage{
-  simbaltrees_topy(tips_p = 10, metric, numtrees, cutlow,
-    cuthigh, a, bounds, alpha, sigma, theta, alpha_eb,
-    sigma_eb, rval = NULL, cval = NULL, asymm = 1,
-    cores = 2, dumpmatrices = TRUE, matdir = "~",
-    modeltorun = "complementarity", output = "matrix")
+  simbaltrees_topy(networksize = 10, metric, numtrees,
+    cutlow, cuthigh, a, bounds, alpha, sigma, theta,
+    alpha_eb, sigma_eb, rval = NULL, cval = NULL,
+    asymm = 2.47, cores = 2, dumpmatrices = TRUE,
+    matdir = "~", modeltorun = "complementarity",
+    output = "matrix", includetraitvar = FALSE)
 }
 \arguments{
-  \item{tips_p}{Number of plant species to simulate in each
-  tree - will be same for all trees. The number of animal
-  species will be calculated based on the value of the
-  asymm parameter.}
+  \item{networksize}{Number of total species to simulate in
+  each tree - will be same for all trees. The number of
+  plant and animal species will be calculated based on the
+  value of the asymm parameter.}
 
   \item{metric}{Methods to use to generate trees, one of
   "colless", "beta", or gamma (see details). Defaults to
@@ -95,7 +96,7 @@
 }
 \examples{
 \dontrun{
-temp <- simbaltrees_topy(tips_p=15, metric="colless", numtrees=5, cutlow=-0.5, cuthigh=0.5, a=10, bounds=c(0,100), alpha=1, sigma=1, alpha_eb=-0.8, sigma_eb=3, cval=0.5, asymm=2, matdir="~/newfiles2", modeltorun="complementarity")
+temp <- simbaltrees_topy(networksize=30, metric="colless", numtrees=5, cutlow=-0.7, cuthigh=0.7, a=10, bounds=c(0,100), alpha=10, sigma=3, alpha_eb=-1.1, sigma_eb=3, cval=0.5, asymm=2, matdir="~/testtest", modeltorun="complementarity", output="edgelist", includetraitvar = TRUE)
 head(temp) # traits data.frame
 }
 }

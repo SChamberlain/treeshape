@@ -4,21 +4,27 @@
 \usage{
   sim_traits_nets_par(listoftraitvecs, type = NULL,
     traitm = NULL, matdir = "~",
-    method = c("complementarity", "barrier"), value = NULL,
+    method = c("complementarity", "barrier", "twomethods"),
+    includetraitvar = FALSE, value = NULL,
     output = "matrix")
 }
 \arguments{
-  \item{listoftraitvecs}{}
+  \item{listoftraitvecs}{Nested list of trait vectors.}
 
-  \item{type}{}
+  \item{type}{Balanced ("bal") or unbalanced ("unbal").}
 
-  \item{traitm}{}
+  \item{traitm}{Evolutionary model, used to create file
+  name, one of "bm", "ou", or "eb".}
 
-  \item{matdir}{}
+  \item{matdir}{directory to put matrices in}
 
   \item{method}{The model to be used to construct
-  interaction matrices. One of
-  "ratio","complementarity","barrier".}
+  interaction matrices. One of "complementarity",
+  "barrier", or "twomethods" (for combined
+  complementarity/barrier).}
+
+  \item{includetraitvar}{Include trait variation in the
+  simulation or not.  Defaults to FALSE.}
 
   \item{value}{Value at which to determine if species
   interact or not - this value depends on the model you are
@@ -28,7 +34,8 @@
 }
 \value{
   A data.frame of network structure metrics for balanced
-  and unbalanced trees.
+  and unbalanced trees (if output="matrix"), or an edgelist
+  (if output="edgelist").
 }
 \description{
   Simulate networks, with interactions propoprtional to
@@ -43,7 +50,7 @@ registerDoMC(4)
 traitvecs <- llply(trees, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 traitvecs2 <- llply(trees2, fastBM, bounds=c(0,Inf), .parallel=TRUE)
 alltraits <- list(traitvecs, traitvecs2)
-sim_traits_nets_par(listoftraitvecs=alltraits, method="c", value=0.2, type="bal", traitm="bm", matdir="~/newfiles2")
+sim_traits_nets_par(listoftraitvecs=alltraits, method="c", value=0.5, type="bal", traitm="bm", matdir="~/testtest", includetraitvar = TRUE)
 sim_traits_nets_par(listoftraitvecs=alltraits, method="b", type="bal", traitm="bm", matdir="~/newfiles2")
 length(out)
 }

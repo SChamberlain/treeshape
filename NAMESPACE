@@ -1,3 +1,4 @@
+export(edgelist2matrix)
 export(fastBM)
 export(getnetmets)
 export(nodeHeights)
