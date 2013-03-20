@@ -62,7 +62,7 @@ sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, mat
 				todo <- list(aaa,bbb)
 				withvar <- function(i,j,data){ as.numeric(abs(data[[1]][[1]][i]-data[[2]][[1]][j]) < value*(data[[1]][[2]][i]+data[[2]][[2]][j]) ) }
 				withvar_ <- Vectorize(withvar, vectorize.args=list("i","j"))
-				mm <- outer(names(one),names(two), withvar_, data=todo)  # complementarity model
+				mm <- outer(names(one),names(two), withvar_, data=todo)
 			} else
 			{
 				one <- listoftraitvecs[[1]][[i]]
@@ -129,14 +129,14 @@ sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, mat
 						aaa <- list(mean=one, var=one_var)
 						bbb <- list(mean=two, var=two_var)
 						todo <- list(aaa,bbb)
-						cb_withvar <- function(i,j,data){ as.numeric(abs(data[[1]][[1]][i]-data[[2]][[1]][j]) < value*(data[[1]][[2]][i]+data[[2]][[2]][j] & data[[1]][[1]][i] < data[[2]][[1]][j]) ) }
+						cb_withvar <- function(i,j,data){ as.numeric((abs(data[[1]][[1]][i]-data[[2]][[1]][j]) < value*(data[[1]][[2]][i]+data[[2]][[2]][j])) & data[[1]][[1]][i] < data[[2]][[1]][j]) }
 						cb_withvar_ <- Vectorize(cb_withvar, vectorize.args=list("i","j"))
 						mm <- outer(names(one),names(two), cb_withvar_, data=todo)  # complementarity-barrier combined model
 					} else
 					{
 						one <- listoftraitvecs[[1]][[i]]
 						two <- listoftraitvecs[[2]][[i]]
-						mm <- outer(one, two, function(x,y) as.numeric(abs(x-y) < value & x < y))
+						mm <- outer(one, two, function(x,y) as.numeric((abs(x-y) < value) & x < y))
 					}
 					
 					# Remove any matrices that have all zeros or all ones
