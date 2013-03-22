@@ -142,7 +142,7 @@ sim_traits_nets_par <- function(listoftraitvecs, type = NULL, traitm = NULL, mat
 					# Remove any matrices that have all zeros or all ones
 					if(sum(mm) == 0) { mmm <- NULL } else 
 						if( sum(mm) == nrow(mm) * ncol(mm) ) {mmm <- NULL } else
-						{ mmm <- mm }
+							{ mmm <- mm }
 					if(is.null(mmm)){NULL} else 
 					{
 						mmm <- doit(mmm)

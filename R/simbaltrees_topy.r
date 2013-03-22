@@ -48,7 +48,10 @@
 #' @return A data.frame of network structure metrics for balanced and unbalanced 
 #' 		trees.
 #' @examples \dontrun{
-#' temp <- simbaltrees_topy(networksize=30, metric="colless", numtrees=5, cutlow=-0.7, cuthigh=0.7, a=10, bounds=c(0,100), alpha=10, sigma=3, alpha_eb=-1.1, sigma_eb=3, cval=0.5, asymm=2.47, matdir="~/testtest", modeltorun="complementarity", output="edgelist", includetraitvar = TRUE)
+#' temp <- simbaltrees_topy(networksize=30, metric="colless", numtrees=5, cutlow=-0.7, 
+#' 		cuthigh=0.7, a=10, bounds=c(0,100), alpha=10, sigma=3, 
+#' 		alpha_eb=-1.1, sigma_eb=3, cval=0.5, asymm=2.47, matdir="~/testtest", 
+#' 		modeltorun="twomethods", output="edgelist", includetraitvar = TRUE)
 #' head(temp) # traits data.frame
 #' }
 #' @export
@@ -209,16 +212,16 @@ simbaltrees_topy <- function(networksize = 10, metric, numtrees, cutlow, cuthigh
 			if(modeltorun=="twomethods"){
 				# combined, complementarity+barrier
 				## BM
-				sim_traits_nets_par(all_t1_bal_bm, method = "b", type="bal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
-				sim_traits_nets_par(all_t1_unbal_bm, method = "b", type="unbal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_bal_bm, method = "t", value = cval, type="bal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_unbal_bm, method = "t", value = cval, type="unbal", traitm="bm", matdir=matdir, output=output, includetraitvar = includetraitvar)
 				
 				## OU
-				sim_traits_nets_par(all_t1_bal_ou, method = "b", type="bal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
-				sim_traits_nets_par(all_t1_unbal_ou, method = "b", type="unbal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_bal_ou, method = "t", value = cval, type="bal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_unbal_ou, method = "t", value = cval, type="unbal", traitm="ou", matdir=matdir, output=output, includetraitvar = includetraitvar)
 				
 				## EB
-				sim_traits_nets_par(all_t1_bal_eb, method = "b", type="bal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
-				sim_traits_nets_par(all_t1_unbal_eb, method = "b", type="unbal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_bal_eb, method = "t", value = cval, type="bal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
+				sim_traits_nets_par(all_t1_unbal_eb, method = "t", value = cval, type="unbal", traitm="eb", matdir=matdir, output=output, includetraitvar = includetraitvar)
 			}
 	
 # 	################## Calculate network metrics on matrices

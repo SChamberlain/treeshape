@@ -96,7 +96,10 @@
 }
 \examples{
 \dontrun{
-temp <- simbaltrees_topy(networksize=30, metric="colless", numtrees=5, cutlow=-0.7, cuthigh=0.7, a=10, bounds=c(0,100), alpha=10, sigma=3, alpha_eb=-1.1, sigma_eb=3, cval=0.5, asymm=2.47, matdir="~/testtest", modeltorun="complementarity", output="edgelist", includetraitvar = TRUE)
+temp <- simbaltrees_topy(networksize=30, metric="colless", numtrees=5, cutlow=-0.7,
+		cuthigh=0.7, a=10, bounds=c(0,100), alpha=10, sigma=3,
+		alpha_eb=-1.1, sigma_eb=3, cval=0.5, asymm=2.47, matdir="~/testtest",
+		modeltorun="twomethods", output="edgelist", includetraitvar = TRUE)
 head(temp) # traits data.frame
 }
 }
