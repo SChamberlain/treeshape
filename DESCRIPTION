@@ -23,6 +23,7 @@ Collate:
     'sim_traits_nets_par.r'
     'simbaltrees_topy.r'
     'edgelist2matrix.r'
+    'getnetmets2.r'
 Depends:
     stringr,
     plyr,

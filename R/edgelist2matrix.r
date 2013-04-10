@@ -2,7 +2,8 @@
 #' 
 #' @param path Path to a edgelist file.
 #' @examples
-#' edgelist2matrix("/Users/scottmac2/testtest/sp30_bal_ou_comp_1.web") 
+#' # without taxon names
+#' edgelist2matrix("/Users/scottmac2/testtest/sp30_bal_eb_twom_4.web")
 #' @export
 edgelist2matrix <- function(path){
 	x <- read.table(file=path)

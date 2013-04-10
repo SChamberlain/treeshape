@@ -11,6 +11,6 @@
   Make a matrix from an edgelist on file.
 }
 \examples{
-edgelist2matrix("/Users/scottmac2/testtest/sp30_bal_ou_comp_1.web")
+edgelist2matrix("/Users/scottmac2/testtest/sp30_bal_eb_twom_4.web")
 }
 
